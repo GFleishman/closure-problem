@@ -31,9 +31,13 @@ class HNC(object):
     def _add_node_weights(self):
         for node in self._G:
             self._G.nodes[node][self._node_label] = 0
-            self._G.nodes[node][self._node_label_parametric] = -self._G.degree(
-                node, weight=self._arc_weight
-            )
+            if 'prior_weight' in self._G.nodes[node].keys():
+                self._G.nodes[node][self._node_label_parametric] =
+                    self._G.nodes[node]['prior_weight']
+            else:
+                self._G.nodes[node][self._node_label_parametric] = -self._G.degree(
+                    node, weight=self._arc_weight
+                )
 
     def solve(self, value):
         # solve for single value with same lower/upper bound
